@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>Raspberry Pi Pico + 10K 可變電阻 + LED 接線圖</title>
+<style>
+  body {
+    font-family: Arial, "Microsoft JhengHei", sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 24px;
+  }
+
+  .wrap {
+    max-width: 1100px;
+    margin: auto;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+  }
+
+  svg {
+    width: 100%;
+    height: auto;
+    border: 1px solid #aaa;
+    background: #fff;
+  }
+
+  .label {
+    font-size: 15px;
+    fill: #111;
+  }
+
+  .small {
+    font-size: 12px;
+    fill: #333;
+  }
+
+  .pin {
+    fill: #eaeaea;
+    stroke: #333;
+    stroke-width: 1;
+  }
+
+  .board {
+    fill: #d8f0ff;
+    stroke: #006699;
+    stroke-width: 2;
+  }
+
+  .wire-3v3 {
+    stroke: red;
+    stroke-width: 4;
+    fill: none;
+  }
+
+  .wire-gnd {
+    stroke: black;
+    stroke-width: 4;
+    fill: none;
+  }
+
+  .wire-adc {
+    stroke: orange;
+    stroke-width: 4;
+    fill: none;
+  }
+
+  .wire-gpio {
+    stroke: green;
+    stroke-width: 4;
+    fill: none;
+  }
+
+  .resistor {
+    stroke: #7a4a00;
+    stroke-width: 3;
+    fill: none;
+  }
+
+  .note {
+    margin-top: 16px;
+    line-height: 1.7;
+  }
+
+  .photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+
+  .photo {
+    border: 1px solid #ccc;
+    padding: 10px;
+    background: #fafafa;
+  }
+
+  .photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid #ddd;
+  }
+
+  .photo figcaption {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: #333;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 16px;
+  }
+
+  th, td {
+    border: 1px solid #aaa;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background: #eee;
+  }
+</style>
+</head>
+
+<body>
+<div class="wrap">
+<h1>Raspberry Pi Pico + WL 10K 可變電阻 + LED 接線圖</h1>
+
+<svg viewBox="0 0 1100 650">
+
+  <!-- Pico board -->
+  <rect x="80" y="80" width="260" height="500" rx="18" class="board"/>
+  <text x="145" y="115" class="label">Raspberry Pi Pico</text>
+
+  <!-- USB -->
+  <rect x="155" y="55" width="110" height="35" rx="5" fill="#ccc" stroke="#555"/>
+  <text x="178" y="78" class="small">USB</text>
+
+  <!-- Left pins -->
+  <g>
+    <rect x="65" y="145" width="45" height="24" class="pin"/>
+    <text x="18" y="162" class="small">GP15</text>
+
+    <rect x="65" y="195" width="45" height="24" class="pin"/>
+    <text x="25" y="212" class="small">GND</text>
+
+    <rect x="65" y="245" width="45" height="24" class="pin"/>
+    <text x="18" y="262" class="small">GP26</text>
+    <text x="12" y="276" class="small">ADC0</text>
+  </g>
+
+  <!-- Right pins -->
+  <g>
+    <rect x="310" y="145" width="45" height="24" class="pin"/>
+    <text x="365" y="162" class="small">3V3</text>
+
+    <rect x="310" y="195" width="45" height="24" class="pin"/>
+    <text x="365" y="212" class="small">GND</text>
+  </g>
+
+  <!-- Potentiometer -->
+  <g>
+    <rect x="700" y="110" width="180" height="130" rx="10" fill="#fff3cd" stroke="#a67c00" stroke-width="2"/>
+    <text x="720" y="140" class="label">WL 10K 可變電阻</text>
+    <text x="735" y="162" class="small">Potentiometer</text>
+
+    <!-- knob -->
+    <circle cx="790" cy="190" r="35" fill="#f5d66b" stroke="#7a4a00" stroke-width="2"/>
+    <line x1="790" y1="190" x2="815" y2="170" stroke="#7a4a00" stroke-width="4"/>
+
+    <!-- pins -->
+    <circle cx="725" cy="260" r="7" fill="red"/>
+    <circle cx="790" cy="260" r="7" fill="orange"/>
+    <circle cx="855" cy="260" r="7" fill="black"/>
+
+    <text x="700" y="285" class="small">左腳：3V3</text>
+    <text x="755" y="305" class="small">中腳：ADC</text>
+    <text x="825" y="285" class="small">右腳：GND</text>
+  </g>
+
+  <!-- LED -->
+  <g>
+    <circle cx="770" cy="430" r="32" fill="#ff6666" stroke="#990000" stroke-width="2"/>
+    <path d="M750 455 L790 455" stroke="#990000" stroke-width="4"/>
+    <path d="M760 405 L780 405" stroke="#990000" stroke-width="3"/>
+    <text x="740" y="490" class="label">LED</text>
+    <text x="710" y="512" class="small">長腳 Anode：接 GPIO</text>
+    <text x="710" y="530" class="small">短腳 Cathode：接 GND</text>
+  </g>
+
+  <!-- resistor -->
+  <g>
+    <path d="M500 430 
+             l15 -15 l15 30 l15 -30 l15 30 l15 -30 l15 30 l15 -15" 
+          class="resistor"/>
+    <text x="515" y="390" class="label">220Ω ~ 330Ω</text>
+    <text x="525" y="410" class="small">LED 限流電阻</text>
+  </g>
+
+  <!-- Wires -->
+
+  <!-- 3V3 to pot left -->
+  <path d="M355 157 C470 157, 560 120, 725 260" class="wire-3v3"/>
+  <text x="500" y="120" class="small" fill="red">3V3 → 電位器一端</text>
+
+  <!-- GP26 ADC0 to pot middle -->
+  <path d="M65 257 C430 300, 590 300, 790 260" class="wire-adc"/>
+  <text x="405" y="315" class="small" fill="orange">GP26 / ADC0 → 電位器中間腳</text>
+
+  <!-- GND to pot right -->
+  <path d="M355 207 C520 230, 640 250, 855 260" class="wire-gnd"/>
+  <text x="530" y="230" class="small" fill="black">GND → 電位器另一端</text>
+
+  <!-- GP15 to resistor -->
+  <path d="M65 157 C220 420, 340 430, 500 430" class="wire-gpio"/>
+  <text x="230" y="410" class="small" fill="green">GP15 → 限流電阻 → LED 正極</text>
+
+  <!-- resistor to LED anode -->
+  <path d="M605 430 L738 430" class="wire-gpio"/>
+
+  <!-- LED cathode to GND -->
+  <path d="M802 430 C900 430, 930 550, 355 207" class="wire-gnd"/>
+  <text x="820" y="405" class="small" fill="black">LED 負極 → GND</text>
+
+  <!-- Legend -->
+  <g>
+    <rect x="80" y="600" width="20" height="6" fill="red"/>
+    <text x="110" y="607" class="small">3V3 電源</text>
+
+    <rect x="230" y="600" width="20" height="6" fill="black"/>
+    <text x="260" y="607" class="small">GND 接地</text>
+
+    <rect x="370" y="600" width="20" height="6" fill="orange"/>
+    <text x="400" y="607" class="small">ADC 類比輸入</text>
+
+    <rect x="540" y="600" width="20" height="6" fill="green"/>
+    <text x="570" y="607" class="small">GPIO 輸出控制 LED</text>
+  </g>
+
+</svg>
+
+<div class="note">
+  <h2>接線表</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Raspberry Pi Pico 腳位</th>
+        <th>連接元件</th>
+        <th>用途</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>3V3</td>
+        <td>WL 10K 可變電阻其中一端</td>
+        <td>提供 ADC 參考電壓上限</td>
+      </tr>
+      <tr>
+        <td>GND</td>
+        <td>WL 10K 可變電阻另一端</td>
+        <td>提供 ADC 參考電壓下限</td>
+      </tr>
+      <tr>
+        <td>GP26 / ADC0</td>
+        <td>WL 10K 可變電阻中間腳</td>
+        <td>讀取旋鈕電壓變化</td>
+      </tr>
+      <tr>
+        <td>GP15</td>
+        <td>220Ω ~ 330Ω 電阻 → LED 正極</td>
+        <td>控制 LED 亮滅或 PWM 亮度</td>
+      </tr>
+      <tr>
+        <td>GND</td>
+        <td>LED 負極</td>
+        <td>LED 回路接地</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>實體接法照片</h2>
+
+  <div class="photos">
+    <figure class="photo">
+      <img src="docs/images/breadboard-overview.jpg" alt="麵包板整體接線照片">
+      <figcaption>
+        圖一：整體接線。上方是 RP2040-Zero 主板，中間是外接 LED 與限流電阻，右側是 WL 10K 可變電阻，下方是麵包板電源模組。
+      </figcaption>
+    </figure>
+
+    <figure class="photo">
+      <img src="docs/images/rp2040-zero-closeup.jpg" alt="RP2040-Zero 主板接線近照">
+      <figcaption>
+        圖二：主板近照。板上中央小方形 LED 是 WS2812 RGB LED，程式以 GPIO16 控制閃爍；外接 LED 亮度則由 GP15 的 PWM 控制。
+      </figcaption>
+    </figure>
+  </div>
+
+  <h2>實體接線重點</h2>
+  <ul>
+    <li>WL 10K 可變電阻中腳接 <b>GP26 / ADC0</b>，用來讀取旋鈕位置。</li>
+    <li>WL 10K 可變電阻兩側分別接 <b>3V3</b> 與 <b>GND</b>；如果旋轉方向和預期相反，交換兩側即可。</li>
+    <li>外接 LED 正極必須經過 <b>220Ω ~ 330Ω</b> 限流電阻後接到 <b>GP15</b>。</li>
+    <li>外接 LED 負極接 <b>GND</b>。</li>
+    <li>RP2040-Zero 板載 WS2812 RGB LED 已接在 <b>GPIO16</b>，不需要額外接線。</li>
+  </ul>
+
+  <h2>補充說明</h2>
+  <ul>
+    <li>可變電阻建議使用 <b>10KΩ</b>，適合接 ADC 讀取。</li>
+    <li>Pico 的 ADC 最大輸入電壓是 <b>3.3V</b>，不可接 5V 到 ADC 腳位。</li>
+    <li>LED 必須串聯 <b>220Ω ~ 330Ω</b> 限流電阻。</li>
+    <li>GP26 是 Pico 的 <b>ADC0</b>，適合讀取旋鈕位置。</li>
+    <li>GP15 可改成其他 GPIO，例如 GP16、GP17，但程式碼也要同步修改。</li>
+  </ul>
+</div>
+
+</div>
+</body>
+</html>
