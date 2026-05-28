@@ -1,0 +1,82 @@
+name: Firmware
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+env:
+  APP_NAME: rp2040-embassy-demo
+  TARGET: thumbv6m-none-eabi
+
+jobs:
+  build:
+    name: Build RP2040 firmware
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ env.TARGET }}
+
+      - name: Cache cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Install firmware tools
+        run: |
+          cargo install flip-link --locked
+          cargo install elf2uf2-rs --locked
+
+      - name: Build release ELF
+        run: cargo build --release
+
+      - name: Generate UF2
+        run: |
+          elf2uf2-rs \
+            "target/${TARGET}/release/${APP_NAME}" \
+            "target/${TARGET}/release/${APP_NAME}.uf2"
+
+      - name: Collect firmware artifacts
+        run: |
+          mkdir -p dist
+          cp "target/${TARGET}/release/${APP_NAME}" "dist/${APP_NAME}.elf"
+          cp "target/${TARGET}/release/${APP_NAME}.uf2" "dist/${APP_NAME}.uf2"
+          sha256sum dist/* > dist/SHA256SUMS
+
+      - name: Upload firmware artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-${{ github.sha }}
+          path: dist/*
+
+      - name: Publish GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: |
+            dist/${{ env.APP_NAME }}.uf2
+            dist/${{ env.APP_NAME }}.elf
+            dist/SHA256SUMS
